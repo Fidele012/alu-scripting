@@ -1,2 +1,1 @@
 # alu-scripting
-Scripting projects 
