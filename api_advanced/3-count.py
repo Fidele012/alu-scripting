@@ -1,10 +1,11 @@
 #!/usr/bin/python3
-""" 3-count.py """
+""" Counting the number of keyword occurence from heads of top post of
+a given subreddit  """
 import requests
 
 
 def count_words(subreddit, word_list, after="", count=[]):
-    """ prints a sorted count of given keywords """
+    """ recursive function that return sorted dict by value """
 
     if after == "":
         count = [0] * len(word_list)

@@ -1,24 +1,27 @@
 #!/usr/bin/python3
-""" 2-recurse.py """
+"""
+recursive
+"""
 import requests
 
 
-def recurse(subreddit, hot_list=[], after=None):
-    """ returns list with titles of all hot articles in a subreddit """
-    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    params = {"after": after}
-    response = requests.get(
-                            url,
-                            headers=headers,
-                            params=params,
-                            allow_redirects=False)
-    if response.status_code == 200:
-        data = response.json()["data"]
-        hot_list += [post["data"]["title"] for post in data["children"]]
-        if data["after"] is None:
-            return hot_list
-        else:
-            return recurse(subreddit, hot_list, data["after"])
-    elif response.status_code == 404:
-        return None
+def recurse(subreddit, hot_list=[], after=''):
+    subreddit_url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
+    headers = {'User-Agent': 'Myapi-app'}
+    parameter = {'after': after}
+
+    r = requests.get(subreddit_url, headers=headers, params=parameter,
+                     allow_redirects=False)
+    if r.status_code == 200:
+        datas = r.json()
+        values = datas['data']['children']
+
+        for each in values:
+            title = each['data']['title']
+            hot_list.append(title)
+        after = datas['data']['after']
+
+        if after is not None:
+            return recurse(subreddit, hot_list, after)
+        return hot_list
+    return None
